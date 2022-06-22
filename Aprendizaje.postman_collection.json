@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "398e2d99-0bcc-439b-91c5-76f2f65db6d4",
+		"name": "Aprendizaje",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14496130"
+	},
+	"item": [
+		{
+			"name": "LoginPOST",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Username response has DjTest\", () => {\r",
+							"  const jsonData = pm.response.json();\r",
+							"  pm.expect(jsonData.user.username).to.eql(\"DjTest\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code POST is OK\", function(){\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204, 207])\r",
+							"})\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"responseBody = JSON.parse(responseBody)\r",
+							"var tokenConduit = responseBody.user.token;\r",
+							"\r",
+							"pm.collectionVariables.set(\"TokenLoginLocal\", tokenConduit); \r",
+							"\r",
+							"pm.environment.set(\"TokenLoginGlobal\", tokenConduit);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');\r",
+							"var uuid = require('uuid');\r",
+							"\r",
+							"pm.collectionVariables.unset('var_date');\r",
+							"\r",
+							"pm.collectionVariables.set(\"var_date\", moment().format(\"YYYY/MM/DD\"));\r",
+							"pm.collectionVariables.set(\"var_time\", moment().format(\"HH:mm:ss\"));\r",
+							"pm.collectionVariables.set(\"var_transaction_tracker\", uuid.v4());\r",
+							"\r",
+							"console.log(\"var_date: \" + pm.collectionVariables.get(\"var_date\"));\r",
+							"console.log(\"var_time: \" + pm.collectionVariables.get(\"var_time\"));\r",
+							"console.log(\"var_transaction_tracker: \" + pm.collectionVariables.get(\"var_transaction_tracker\"));\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenLoginLocal}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRqY2hyaXN0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiRGpUZXN0IiwiaWF0IjoxNjU1ODI5MjQ3LCJleHAiOjE2NjEwMTMyNDd9.0Yydag1UPJNatIomIw7pgVHSiqpBtDbgkRPkyizSc0w",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\": {\r\n        \"email\": \"djchrist@gmail.com\",\r\n        \"password\": \"test1234\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.realworld.io/api/users/login",
+					"protocol": "https",
+					"host": [
+						"api",
+						"realworld",
+						"io"
+					],
+					"path": [
+						"api",
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConsultarTodosLosArticulosGET",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TokenLoginLocal}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.realworld.io/api/articles?limit=10&offset=0",
+					"protocol": "https",
+					"host": [
+						"api",
+						"realworld",
+						"io"
+					],
+					"path": [
+						"api",
+						"articles"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TokenLoginLocal",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRqY2hyaXN0QGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiRGpUZXN0IiwiaWF0IjoxNjU1ODUwNDQ5LCJleHAiOjE2NjEwMzQ0NDl9.iSzkd6ZUymMqqKwan1UGEJXfJYCudyO48X2MuhCUU88",
+			"type": "string"
+		},
+		{
+			"key": "var_date",
+			"value": ""
+		},
+		{
+			"key": "var_time",
+			"value": ""
+		},
+		{
+			"key": "var_transaction_tracker",
+			"value": ""
+		}
+	]
+}
